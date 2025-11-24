@@ -61,11 +61,10 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block mb-6">
               <Image
-                src="/nike-logo.svg"
+                src="/logo.svg"
                 alt="Nike"
-                width={60}
-                height={22}
-                className="brightness-0 invert"
+                width={80}
+                height={29}
               />
             </Link>
           </div>

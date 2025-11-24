@@ -42,12 +42,11 @@ const latestShoes = [
 
 const Home = () => {
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-heading-1 font-jost mb-12">Nike</h1>
+    <main className="container mx-auto max-w-7xl px-4 py-8">
 
       <section className="my-16">
         <h2 className="text-3xl font-bold mb-8">Latest Shoes</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {latestShoes.map((shoe) => (
             <Card
               key={shoe.id}

@@ -32,15 +32,8 @@ export default function Card({
   };
 
   const cardContent = (
-    <div className="group relative bg-light-200 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg">
+    <div className="group relative bg-light-100 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg">
       <div className="relative aspect-square bg-light-200">
-        {badge && (
-          <div
-            className={`absolute top-4 left-4 px-3 py-1 rounded-md text-sm font-medium z-10 ${badgeColorClasses[badgeColor]}`}
-          >
-            {badge}
-          </div>
-        )}
         {isNew && (
           <div className="absolute top-4 right-4 px-3 py-1 rounded-md text-sm font-medium bg-dark-900 text-white z-10">
             New
@@ -51,13 +44,13 @@ export default function Card({
             src={image}
             alt={title}
             fill
-            className="object-contain group-hover:scale-105 transition-transform duration-300"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
       </div>
 
-      <div className="p-4 bg-white">
+      <div className="p-4 bg-light-100">
         {category && (
           <p className="text-sm text-dark-700 font-medium mb-1">{category}</p>
         )}

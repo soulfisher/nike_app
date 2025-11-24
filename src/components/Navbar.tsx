@@ -25,7 +25,7 @@ export default function Navbar() {
                 src="/nike-logo.svg"
                 alt="Nike"
                 width={60}
-                height={22}
+                height={21}
                 priority
               />
             </Link>

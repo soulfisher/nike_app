@@ -1,8 +1,19 @@
 import React from 'react'
 import Card from '@/components/Card'
 
-// Sample shoe data
-const latestShoes = [
+interface ShoeData {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  isNew?: boolean;
+  badge?: string;
+  badgeColor?: "red" | "orange" | "green";
+}
+
+const latestShoes: ShoeData[] = [
   {
     id: '1',
     title: 'Nike Air Max 270',

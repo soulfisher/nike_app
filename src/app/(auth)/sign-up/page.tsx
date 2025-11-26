@@ -1,5 +1,10 @@
 import AuthForm from "@/components/AuthForm";
 
-export default function SignUpPage() {
-  return <AuthForm mode="sign-up" />;
+interface SignUpPageProps {
+  searchParams: Promise<{ callbackUrl?: string }>;
+}
+
+export default async function SignUpPage({ searchParams }: SignUpPageProps) {
+  const { callbackUrl } = await searchParams;
+  return <AuthForm mode="sign-up" callbackUrl={callbackUrl} />;
 }

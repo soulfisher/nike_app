@@ -1,29 +1,71 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SocialProviders from "./SocialProviders";
+import { signIn, signUp, type SignInInput, type SignUpInput } from "@/lib/auth/actions";
 
 interface AuthFormProps {
   mode: "sign-in" | "sign-up";
+  callbackUrl?: string;
 }
 
-export default function AuthForm({ mode }: AuthFormProps) {
+export default function AuthForm({ mode, callbackUrl }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const isSignUp = mode === "sign-up";
 
-  const title = isSignUp ? "Create your account" : "Sign in to your account";
-  const subtitle = isSignUp
-    ? "Join Nike to get the best products and exclusive member benefits."
-    : "Welcome back! Enter your credentials to access your account.";
-  const submitText = isSignUp ? "Create Account" : "Sign In";
-  const alternateText = isSignUp
-    ? "Already have an account?"
-    : "Don't have an account?";
-  const alternateLinkText = isSignUp ? "Sign in" : "Sign up";
-  const alternateLink = isSignUp ? "/sign-in" : "/sign-up";
+    const title = isSignUp ? "Create your account" : "Sign in to your account";
+    const subtitle = isSignUp
+      ? "Join Nike to get the best products and exclusive member benefits."
+      : "Welcome back! Enter your credentials to access your account.";
+    const submitText = isSignUp ? "Create Account" : "Sign In";
+    const alternateText = isSignUp
+      ? "Already have an account?"
+      : "Don't have an account?";
+    const alternateLinkText = isSignUp ? "Sign in" : "Sign up";
+    const alternateLink = isSignUp ? "/sign-in" : "/sign-up";
 
-  return (
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setError(null);
+
+      const formData = new FormData(e.currentTarget);
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
+
+      startTransition(async () => {
+        const redirectTo = callbackUrl || '/';
+        
+        if (isSignUp) {
+          const name = formData.get("name") as string;
+          const input: SignUpInput = { name, email, password };
+          const result = await signUp(input);
+
+          if (result.success) {
+            router.push(redirectTo);
+            router.refresh();
+          } else if (result.error) {
+            setError(result.error);
+          }
+        } else {
+          const input: SignInInput = { email, password };
+          const result = await signIn(input);
+
+          if (result.success) {
+            router.push(redirectTo);
+            router.refresh();
+          } else if (result.error) {
+            setError(result.error);
+          }
+        }
+      });
+    };
+
+    return (
     <div className="bg-light-100 rounded-2xl shadow-sm border border-light-300 p-6 sm:p-8">
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-dark-900 mb-2">
@@ -45,7 +87,12 @@ export default function AuthForm({ mode }: AuthFormProps) {
         </div>
       </div>
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        {error && (
+          <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            {error}
+          </div>
+        )}
         {isSignUp && (
           <div>
             <label
@@ -187,12 +234,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
           </label>
         )}
 
-        <button
-          type="submit"
-          className="w-full py-3 px-4 bg-dark-900 text-light-100 font-medium rounded-lg hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2"
-        >
-          {submitText}
-        </button>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="w-full py-3 px-4 bg-dark-900 text-light-100 font-medium rounded-lg hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isPending ? "Please wait..." : submitText}
+                </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-dark-700">

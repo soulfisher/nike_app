@@ -12,45 +12,63 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const isSignUp = mode === "sign-up";
 
-  const title = isSignUp ? "Create your account" : "Sign in to your account";
+  const title = isSignUp ? "Join Nike Today!" : "Welcome Back!";
   const subtitle = isSignUp
-    ? "Join Nike to get the best products and exclusive member benefits."
-    : "Welcome back! Enter your credentials to access your account.";
-  const submitText = isSignUp ? "Create Account" : "Sign In";
+    ? "Create your account to start your fitness journey"
+    : "Sign in to continue your fitness journey";
+  const submitText = isSignUp ? "Sign Up" : "Sign In";
   const alternateText = isSignUp
     ? "Already have an account?"
     : "Don't have an account?";
-  const alternateLinkText = isSignUp ? "Sign in" : "Sign up";
+  const alternateLinkText = isSignUp ? "Sign In" : "Sign Up";
   const alternateLink = isSignUp ? "/sign-in" : "/sign-up";
+  const dividerText = isSignUp ? "Or sign up with" : "Or sign in with";
 
   return (
-    <div className="bg-light-100 rounded-2xl shadow-sm border border-light-300 p-6 sm:p-8">
+    <div className="w-full">
+      {/* Top link - alternate action */}
+      <div className="text-right mb-8">
+        <span className="text-sm text-dark-700">
+          {alternateText}{" "}
+          <Link
+            href={alternateLink}
+            className="text-dark-900 hover:underline font-medium"
+          >
+            {alternateLinkText}
+          </Link>
+        </span>
+      </div>
+
+      {/* Title and subtitle */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-dark-900 mb-2">
+        <h1 className="text-3xl sm:text-4xl font-bold text-dark-900 mb-3">
           {title}
         </h1>
-        <p className="text-dark-700 text-sm sm:text-base">
+        <p className="text-dark-700">
           {subtitle}
         </p>
       </div>
 
-      <SocialProviders mode={mode} />
+      {/* Social providers */}
+      <SocialProviders />
 
-      <div className="relative my-6">
+      {/* Divider */}
+      <div className="relative my-8">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-light-300"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-light-100 text-dark-700">or continue with email</span>
+          <span className="px-4 bg-light-100 text-dark-700">{dividerText}</span>
         </div>
       </div>
 
-      <form className="space-y-4">
+      {/* Form */}
+      <form className="space-y-5">
         {isSignUp && (
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-dark-900 mb-1.5"
+              className="block text-sm font-medium text-dark-900 mb-2"
             >
               Full Name
             </label>
@@ -60,7 +78,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               name="name"
               autoComplete="name"
               placeholder="Enter your full name"
-              className="w-full px-4 py-3 border border-light-400 rounded-lg bg-light-100 text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3.5 border border-light-400 rounded-lg bg-light-100 text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:border-transparent transition-all duration-200"
               required
             />
           </div>
@@ -69,17 +87,17 @@ export default function AuthForm({ mode }: AuthFormProps) {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-dark-900 mb-1.5"
+            className="block text-sm font-medium text-dark-900 mb-2"
           >
-            Email Address
+            Email
           </label>
           <input
             type="email"
             id="email"
             name="email"
             autoComplete="email"
-            placeholder="Enter your email"
-            className="w-full px-4 py-3 border border-light-400 rounded-lg bg-light-100 text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:border-transparent transition-all duration-200"
+            placeholder="johndoe@gmail.com"
+            className="w-full px-4 py-3.5 border border-light-400 rounded-lg bg-light-100 text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:border-transparent transition-all duration-200"
             required
           />
         </div>
@@ -87,7 +105,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-dark-900 mb-1.5"
+            className="block text-sm font-medium text-dark-900 mb-2"
           >
             Password
           </label>
@@ -97,14 +115,14 @@ export default function AuthForm({ mode }: AuthFormProps) {
               id="password"
               name="password"
               autoComplete={isSignUp ? "new-password" : "current-password"}
-              placeholder={isSignUp ? "Create a password" : "Enter your password"}
-              className="w-full px-4 py-3 pr-12 border border-light-400 rounded-lg bg-light-100 text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:border-transparent transition-all duration-200"
+              placeholder="minimum 8 characters"
+              className="w-full px-4 py-3.5 pr-12 border border-light-400 rounded-lg bg-light-100 text-dark-900 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:border-transparent transition-all duration-200"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-700 hover:text-dark-900 transition-colors duration-200"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-dark-700 hover:text-dark-900 transition-colors duration-200"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -140,11 +158,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
               )}
             </button>
           </div>
-          {isSignUp && (
-            <p className="mt-1.5 text-xs text-dark-700">
-              Must be at least 8 characters
-            </p>
-          )}
         </div>
 
         {!isSignUp && (
@@ -166,42 +179,23 @@ export default function AuthForm({ mode }: AuthFormProps) {
           </div>
         )}
 
-        {isSignUp && (
-          <label className="flex items-start gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              name="terms"
-              className="w-4 h-4 mt-0.5 rounded border-light-400 text-dark-900 focus:ring-dark-900 focus:ring-offset-0"
-              required
-            />
-            <span className="text-sm text-dark-700">
-              I agree to the{" "}
-              <Link href="/terms" className="text-dark-900 hover:underline font-medium">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="text-dark-900 hover:underline font-medium">
-                Privacy Policy
-              </Link>
-            </span>
-          </label>
-        )}
-
         <button
           type="submit"
-          className="w-full py-3 px-4 bg-dark-900 text-light-100 font-medium rounded-lg hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2"
+          className="w-full py-3.5 px-4 bg-dark-900 text-light-100 font-medium rounded-full hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-dark-900 focus:ring-offset-2 mt-2"
         >
           {submitText}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-dark-700">
-        {alternateText}{" "}
-        <Link
-          href={alternateLink}
-          className="text-dark-900 hover:underline font-medium"
-        >
-          {alternateLinkText}
+      {/* Terms text at bottom */}
+      <p className="mt-8 text-center text-sm text-dark-700">
+        By signing {isSignUp ? "up" : "in"}, you agree to our{" "}
+        <Link href="/terms" className="text-dark-900 hover:underline font-medium">
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="text-dark-900 hover:underline font-medium">
+          Privacy Policy
         </Link>
       </p>
     </div>
